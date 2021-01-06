@@ -1,7 +1,6 @@
 import { Keyring, WsProvider } from "@polkadot/api";
 import { assert } from "@polkadot/util";
 import { waitReady } from "@polkadot/wasm-crypto";
-import { options } from "@acala-network/api";
 
 import { loadConfig } from "./util/config";
 import logger from "./util/logger";
@@ -11,6 +10,7 @@ import api from "./channel/api";
 import { Service } from "./services";
 import { MatrixChannel } from "./channel/matrix";
 import { DiscordChannel } from "./channel/discord";
+import { customTypes } from "./custom_types";
 
 async function run() {
   const config = loadConfig();
@@ -35,7 +35,10 @@ async function run() {
 
   const provider = new WsProvider(config.faucet.endpoint);
 
-  await service.connect(options({ provider }));
+  await service.connect({ 
+    provider,
+    types: customTypes,
+   });
 
   const chainName = await service.getChainName();
 
@@ -45,25 +48,29 @@ async function run() {
     logger.info(`🚀  faucet api launced at port:${config.channel.api.port}.`);
   });
 
-  const matrix = new MatrixChannel({
-    config: config.channel.matrix,
-    storage,
-    service,
-  });
+  if (config.channel.matrix) {
+    const matrix = new MatrixChannel({
+      config: config.channel.matrix,
+      storage,
+      service,
+    });
+  
+    await matrix.start().then(() => {
+      logger.info(`🚀  matrix channel launced success`);
+    });
+  }
 
-  await matrix.start().then(() => {
-    logger.info(`🚀  matrix channel launced success`);
-  });
-
-  const discord = new DiscordChannel({
-    config: config.channel.discord,
-    storage,
-    service,
-  });
-
-  await discord.start().then(() => {
-    logger.info(`🚀  discord channel launced success`);
-  });
+  if (config.channel.discord) {
+    const discord = new DiscordChannel({
+      config: config.channel.discord,
+      storage,
+      service,
+    });
+  
+    await discord.start().then(() => {
+      logger.info(`🚀  discord channel launced success`);
+    });
+  }
 }
 
 run();

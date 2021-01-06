@@ -16,10 +16,7 @@ mnemonic = "CUSTOM MNEMONIC"
   
 [faucet.strategy]
 [faucet.strategy.normal]
-amounts = [
-  { asset = 'ACA', amount = 2 },
-  { asset = 'AUSD', amount = 2000 }
-]
+amount = 1
 limit = 2
 frequency = ["1", "day"]
 

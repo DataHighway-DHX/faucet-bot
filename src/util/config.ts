@@ -17,7 +17,7 @@ export interface Config {
     };
     strategy: {
       [k in string]: {
-        amounts: { asset: string; amount: number }[];
+        amount: number;
         limit: number;
         frequency: [string, OpUnitType];
       };

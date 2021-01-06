@@ -2,7 +2,6 @@ import { ApiPromise } from "@polkadot/api";
 import { template, add } from "lodash";
 import BN from "bignumber.js";
 import { ITuple } from "@polkadot/types/types";
-import { Balance } from "@acala-network/types/interfaces";
 import { DispatchError } from "@polkadot/types/interfaces";
 import { ApiOptions } from "@polkadot/api/types";
 import { KeyringPair } from "@polkadot/keyring/types";
@@ -111,15 +110,10 @@ export class Service {
           );
           sendMessage(
             task.channel,
-            task.params
-              .map(
-                (item) =>
-                  `${item.token}: ${formatToReadable(
-                    item.balance,
-                    this.config.precision
-                  )}`
-              )
-              .join(", "),
+            `DHX: ${formatToReadable(
+              task.params.balance,
+              this.config.precision
+            )}`,
             tx
           );
         })
@@ -132,23 +126,12 @@ export class Service {
   }
 
   public async queryBalance() {
-    const result = await Promise.all(
-      this.config.assets.map((token) =>
-        (this.api as any).derive.currencies.balance(this.account.address, token)
-      )
-    );
-
-    return this.config.assets.map((token, index) => {
-      return {
-        token: token,
-        balance: result[index]
-          ? formatToReadable(
-              (result[index] as Balance).toString(),
-              this.config.precision
-            )
-          : 0,
-      };
-    });
+    this.api.query.system.account(this.account.address);
+    const info = await this.api.query.system.account(this.account.address)
+    return [{
+      token: 'DHX',
+      balance: info.data.free.toString()
+    }];
   }
 
   public async getChainName() {
@@ -226,11 +209,7 @@ export class Service {
   }
 
   public buildTx(config: SendConfig) {
-    return this.api.tx.utility.batch(
-      config.map(({ token, balance, dest }) =>
-        this.api.tx.currencies.transfer(dest, token, balance)
-      )
-    );
+    return this.api.tx.balances.transfer(config.dest, config.balance);
   }
 
   usage() {
@@ -271,11 +250,11 @@ export class Service {
     }
 
     // check build tx
-    const params = strategyDetail.amounts.map((item) => ({
-      token: item.asset,
-      balance: formatToSendable(item.amount, this.config.precision),
+    const amount = strategyDetail.amount;
+    const params = {
+      balance: formatToSendable(amount, this.config.precision),
       dest: address,
-    }));
+    };
 
     try {
       this.buildTx(params);
