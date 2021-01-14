@@ -19,4 +19,4 @@ jobs:
         mkdir ./build
         yarn install
     - name: Build binary
-      run: yarn run build
+      run: yarn
