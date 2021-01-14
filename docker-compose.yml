@@ -1,0 +1,16 @@
+version: "2"
+services:
+  faucet-bot:
+    build: .
+    image: faucet-bot:latest
+    env_file:
+      - .env
+    ports:
+      - "8000:8080"
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  redis:
+    image: redis
+    restart: unless-stopped

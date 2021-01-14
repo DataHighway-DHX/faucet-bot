@@ -1,18 +1,18 @@
 [storage]
 [storage.redis]
-url = "redis://127.0.0.1:6379"
+url = "redis://redis:6379"
 
 [task]
-redis = "redis://127.0.0.1:6379"
+redis = "redis://redis:6379"
 maxPendingCount = 20
 
 [faucet]
-endpoint = "ENDPOINT"
+endpoint = "${ENDPOINT}"
 precision = 18
 assets = ['ACA', 'AUSD']
 
 [faucet.account]
-mnemonic = "CUSTOM MNEMONIC"
+mnemonic = "${MNEMONIC}"
   
 [faucet.strategy]
 [faucet.strategy.normal]
@@ -33,15 +33,9 @@ port = 3000
 limit = 2
 frequency = ["1", "day"]
 
-[channel.matrix]
-token = "TEST_TOKEN"
-userId = "@test-bot:matrix.org"
-limit = 2
-frequency = ["1", "day"]
-
 [channel.discord]
 activeChannelName = 'faucet-test-channel'
-token = "TEST_TOKEN"
+token = "${DISCORD_TOKEN}"
 limit = 2
 frequency = ["1", "day"]
 
