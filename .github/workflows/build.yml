@@ -12,11 +12,11 @@ jobs:
     - name: Set node version
       uses: actions/setup-node@v2-beta
       with:
-        node-version: '12'
+        node-version: '13'
         check-latest: true
-    - name: Install dependencies
+    - name: Build binary
       run: |
         mkdir ./build
-        yarn install
-    - name: Build binary
-      run: yarn
+        yarn
+    - name: Install dependencies
+      run: yarn install --production=true --no-progress
