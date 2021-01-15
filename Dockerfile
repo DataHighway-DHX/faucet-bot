@@ -34,9 +34,10 @@ RUN mkdir -p /opt/app && npm install pm2 -g;
 WORKDIR /opt/app
 
 COPY --from=dependencies /opt/build/node_modules /opt/app/node_modules
+COPY --from=dependencies /opt/build/package.json /opt/app/
 COPY --from=build /opt/build/build /opt/app/build
 COPY ecosystem.config.js .
 
 WORKDIR /opt/app
 
-ENTRYPOINT [ "pm2", "start"]
+ENTRYPOINT [ "yarn", "run", "serve"]
