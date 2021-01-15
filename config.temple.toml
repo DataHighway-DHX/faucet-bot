@@ -9,7 +9,7 @@ maxPendingCount = 20
 [faucet]
 endpoint = "${ENDPOINT}"
 precision = 18
-assets = ['ACA', 'AUSD']
+assets = ['DHX']
 
 [faucet.account]
 mnemonic = "${MNEMONIC}"
@@ -19,13 +19,6 @@ mnemonic = "${MNEMONIC}"
 amount = 1
 limit = 2
 frequency = ["1", "day"]
-
-[faucet.strategy.ren]
-amounts = [
-  { asset = 'RENBTC', amount = 0.2 }
-]
-limit = 10
-frequency = ["1", "month"]
 
 [channel]
 [channel.api]
