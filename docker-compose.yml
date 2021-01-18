@@ -1,12 +1,8 @@
-version: "2"
+version: "3"
 services:
   faucet-bot:
     build: .
-    image: faucet-bot:latest
-    env_file:
-      - .env
-    ports:
-      - "8001:8080"
+    image: dhxdocker/faucet-bot
     depends_on:
       - redis
     restart: unless-stopped
