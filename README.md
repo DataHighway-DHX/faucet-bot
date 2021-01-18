@@ -4,12 +4,13 @@
 1. nodejs
 2. redis
 3. pm2
+
 ### Setup environmental configuration
 ```bash
-cp .env.example .env
+cp config.temle.toml config.toml
 ```
 
-Make necessary changes for your environment inside the .env file
+Make necessary changes for your environment inside the .toml file
 
 ### Build with docker
 ```
