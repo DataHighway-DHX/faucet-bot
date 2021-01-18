@@ -4,6 +4,22 @@
 1. nodejs
 2. redis
 3. pm2
+### Setup environmental configuration
+```bash
+cp .env.example .env
+```
+
+Make necessary changes for your environment inside the .env file
+
+### Build with docker
+```
+docker-compose build
+```
+
+### Run with docker
+```
+docker-compose up -d
+```
 
 ### Start with pm2
 ```bash
@@ -11,7 +27,7 @@ cd $PROJECT_ROOT
 
 yarn
 
-pm2 start -- environment.json
+pm2 start
 ```
 
 --------------------
