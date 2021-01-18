@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "qiuhao <qiuhao951@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "serve": "node ./node_modules/.bin/ts-node src/index.ts"
+  },
   "dependencies": {
     "@polkadot/api": "^2.1.1",
     "@types/bull": "^3.14.2",

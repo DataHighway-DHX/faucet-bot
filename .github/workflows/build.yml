@@ -1,0 +1,22 @@
+name: Build
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v2
+    - name: Set node version
+      uses: actions/setup-node@v2-beta
+      with:
+        node-version: '13'
+        check-latest: true
+    - name: Build binary
+      run: |
+        mkdir ./build
+        yarn
+    - name: Install dependencies
+      run: yarn install --production=true --no-progress
